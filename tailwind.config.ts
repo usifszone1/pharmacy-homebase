@@ -135,6 +135,7 @@ export default {
       fontFamily: {
         'sans': ['Inter', 'system-ui', 'sans-serif'],
         'display': ['SF Pro Display', 'Inter', 'system-ui', 'sans-serif'],
+        'arabic': ['Cairo', 'sans-serif'],
       },
       boxShadow: {
         'glass': '0 4px 30px rgba(0, 0, 0, 0.1)',

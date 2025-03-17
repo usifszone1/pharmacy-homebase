@@ -17,7 +17,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-pharmacy-bg">
+    <div className="min-h-screen bg-pharmacy-bg dark:bg-navy-dark transition-colors duration-300">
       <NavBar />
       
       <main>
@@ -39,7 +39,7 @@ const Index = () => {
         <PharmacistCard />
       </main>
       
-      <Footer className="border-t border-gray-200" />
+      <Footer className="border-t border-gray-200 dark:border-gray-700" />
     </div>
   );
 };
