@@ -96,7 +96,7 @@ const Hero = ({ title, subtitle, onExploreClick }: HeroProps) => {
               className="border-navy text-navy hover:bg-navy/5 px-8 py-6 rounded-md text-lg"
               onClick={onExploreClick}
             >
-              Explore Services
+              Dashboard
             </Button>
           </div>
           
