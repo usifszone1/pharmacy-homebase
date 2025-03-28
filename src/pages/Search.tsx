@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import NavBar from '@/components/NavBar';
+import { useToast } from '@/components/ui/toast';
+import { fetchCustomers, Customer } from '@/utils/database';
 
 interface Medicine {
   id: number;
@@ -14,13 +16,6 @@ interface Medicine {
   type: string;
   price: number;
   stock: boolean;
-}
-
-interface Customer {
-  id: number;
-  name: string;
-  phone: string;
-  lastVisit: string;
 }
 
 const mockMedicines: Medicine[] = [
@@ -32,51 +27,78 @@ const mockMedicines: Medicine[] = [
   { id: 6, name: 'Aspirin', type: 'Pain Relief', price: 15, stock: true },
 ];
 
-const mockCustomers: Customer[] = [
-  { id: 1, name: 'Ahmed Mohamed', phone: '0100123456', lastVisit: '2023-10-15' },
-  { id: 2, name: 'Fatima Ali', phone: '0111234567', lastVisit: '2023-11-05' },
-  { id: 3, name: 'Omar Khaled', phone: '0122345678', lastVisit: '2023-12-20' },
-  { id: 4, name: 'Laila Ibrahim', phone: '0133456789', lastVisit: '2024-01-08' },
-];
-
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState('medicines');
   const [filteredMedicines, setFilteredMedicines] = useState<Medicine[]>(mockMedicines);
-  const [filteredCustomers, setFilteredCustomers] = useState<Customer[]>(mockCustomers);
+  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [filteredCustomers, setFilteredCustomers] = useState<Customer[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
 
+  // Fetch all customers when component mounts
   useEffect(() => {
-    if (searchQuery) {
+    const loadCustomers = async () => {
       setIsLoading(true);
-      
-      // Simulate API call delay
-      const timer = setTimeout(() => {
-        const queryLower = searchQuery.toLowerCase();
-        
+      try {
+        const data = await fetchCustomers();
+        setCustomers(data);
+        setFilteredCustomers(data);
+      } catch (error) {
+        console.error('Failed to load customers:', error);
+        toast({
+          title: 'Error',
+          description: 'Failed to load customer data. Please try again.',
+          variant: 'destructive',
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadCustomers();
+  }, [toast]);
+
+  // Handle search filter
+  useEffect(() => {
+    if (searchQuery.trim() === '') {
+      // If search is cleared, reset to original lists
+      setFilteredMedicines(mockMedicines);
+      setFilteredCustomers(customers);
+      return;
+    }
+
+    setIsLoading(true);
+    
+    // Simulate API call delay
+    const timer = setTimeout(async () => {
+      try {
         if (activeTab === 'medicines') {
+          const queryLower = searchQuery.toLowerCase();
           const results = mockMedicines.filter(medicine => 
             medicine.name.toLowerCase().includes(queryLower) ||
             medicine.type.toLowerCase().includes(queryLower)
           );
           setFilteredMedicines(results);
         } else {
-          const results = mockCustomers.filter(customer => 
-            customer.name.toLowerCase().includes(queryLower) ||
-            customer.phone.includes(searchQuery)
-          );
+          // For customers, use our API endpoint
+          const results = await fetchCustomers(searchQuery);
           setFilteredCustomers(results);
         }
-        
+      } catch (error) {
+        console.error('Search error:', error);
+        toast({
+          title: 'Search Error',
+          description: 'An error occurred while searching. Please try again.',
+          variant: 'destructive',
+        });
+      } finally {
         setIsLoading(false);
-      }, 500);
-      
-      return () => clearTimeout(timer);
-    } else {
-      setFilteredMedicines(mockMedicines);
-      setFilteredCustomers(mockCustomers);
-    }
-  }, [searchQuery, activeTab]);
+      }
+    }, 500);
+    
+    return () => clearTimeout(timer);
+  }, [searchQuery, activeTab, customers, toast]);
 
   const handleTabChange = (value: string) => {
     setActiveTab(value);
@@ -184,6 +206,7 @@ const Search = () => {
                     <tr>
                       <th className="px-6 py-4 text-left text-sm font-semibold text-navy">Name</th>
                       <th className="px-6 py-4 text-left text-sm font-semibold text-navy">Phone</th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-navy">Organization</th>
                       <th className="px-6 py-4 text-left text-sm font-semibold text-navy">Last Visit</th>
                       <th className="px-6 py-4 text-right text-sm font-semibold text-navy">Actions</th>
                     </tr>
@@ -193,6 +216,7 @@ const Search = () => {
                       <tr key={customer.id} className="hover:bg-gray-50 transition-colors">
                         <td className="px-6 py-4 whitespace-nowrap text-navy">{customer.name}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-gray-600">{customer.phone}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-gray-600">{customer.organization || '-'}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-gray-600">
                           {new Date(customer.lastVisit).toLocaleDateString('en-US', {
                             year: 'numeric',
