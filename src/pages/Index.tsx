@@ -5,9 +5,11 @@ import Hero from '@/components/Hero';
 import InfoSection from '@/components/InfoSection';
 import PharmacistCard from '@/components/PharmacistCard';
 import Footer from '@/components/Footer';
+import { getOrganizations } from '@/utils/database';
 
 const Index = () => {
   const infoSectionRef = useRef<HTMLDivElement>(null);
+  const organizations = getOrganizations(); // Get the list of organizations
 
   const scrollToInfoSection = () => {
     infoSectionRef.current?.scrollIntoView({ 
