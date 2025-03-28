@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Search as SearchIcon, ArrowLeft, Filter, User } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import NavBar from '@/components/NavBar';
@@ -97,7 +96,7 @@ const Search = () => {
           </div>
           <Input
             type="text"
-            placeholder="Search for customers by name, phone, or organization..."
+            placeholder="Search for customers by name, phone, card no, agenda, notes..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10 h-14 border border-gray-300 focus:ring-pharmacy-accent focus:border-pharmacy-accent rounded-lg shadow-sm"
@@ -133,7 +132,9 @@ const Search = () => {
                     <tr>
                       <th className="px-6 py-4 text-left text-sm font-semibold text-navy">Name</th>
                       <th className="px-6 py-4 text-left text-sm font-semibold text-navy">Phone</th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-navy">Card No</th>
                       <th className="px-6 py-4 text-left text-sm font-semibold text-navy">Organization</th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-navy">Agenda</th>
                       <th className="px-6 py-4 text-left text-sm font-semibold text-navy">Last Visit</th>
                       <th className="px-6 py-4 text-right text-sm font-semibold text-navy">Actions</th>
                     </tr>
@@ -143,7 +144,9 @@ const Search = () => {
                       <tr key={customer.id} className="hover:bg-gray-50 transition-colors">
                         <td className="px-6 py-4 whitespace-nowrap text-navy">{customer.name}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-gray-600">{customer.phone}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-gray-600">{customer.cardNo || '-'}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-gray-600">{customer.organization || '-'}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-gray-600">{customer.agenda || '-'}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-gray-600">
                           {new Date(customer.lastVisit).toLocaleDateString('en-US', {
                             year: 'numeric',
