@@ -92,17 +92,17 @@ const Hero = ({ title, subtitle, onExploreClick }: HeroProps) => {
             )}
           >
             <Button 
-              className="bg-navy hover:bg-navy-light text-white px-8 py-6 rounded-md text-lg"
+              className="bg-navy hover:bg-navy-light text-white px-8 py-6 rounded-md text-lg shadow-lg hover:shadow-xl transition-all duration-300"
               onClick={() => window.location.href = 'tel:01066677826'}
             >
               Call Now
             </Button>
             <Button 
               variant="outline" 
-              className="border-navy text-navy hover:bg-navy/5 px-8 py-6 rounded-md text-lg"
+              className="border-navy text-navy hover:bg-navy/10 px-8 py-6 rounded-md text-lg shadow-md hover:shadow-lg transition-all duration-300"
               onClick={handleExploreClick}
             >
-              Explore Services
+              Clients
             </Button>
           </div>
           

@@ -1,18 +1,20 @@
 
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Search as SearchIcon, ArrowLeft, Filter, User } from 'lucide-react';
+import { Search as SearchIcon, ArrowLeft, Filter, User, Users, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import NavBar from '@/components/NavBar';
 import { useToast } from '@/hooks/use-toast';
 import { fetchCustomers, Customer } from '@/utils/database';
+import { Card, CardContent } from '@/components/ui/card';
 
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [filteredCustomers, setFilteredCustomers] = useState<Customer[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
   const { toast } = useToast();
 
   // Fetch all customers when component mounts
@@ -23,6 +25,7 @@ const Search = () => {
         const data = await fetchCustomers();
         setCustomers(data);
         setFilteredCustomers(data);
+        setLastUpdated(new Date());
       } catch (error) {
         console.error('Failed to load customers:', error);
         toast({
@@ -89,6 +92,71 @@ const Search = () => {
           </p>
         </div>
         
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          {/* Total Clients Card */}
+          <Card className="overflow-hidden rounded-xl border-none shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-r from-navy to-navy-light text-white">
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center mr-4">
+                  <Users className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <p className="text-white/80 font-medium">Total Clients</p>
+                  <div className="flex items-end">
+                    <h3 className="text-3xl font-bold animate-fade-in">
+                      {customers.length}
+                    </h3>
+                    <span className="ml-2 text-white/60 text-sm">registered</span>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4 h-2 bg-white/10 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-coral rounded-full animate-pulse" 
+                  style={{ width: '65%' }}
+                ></div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          {/* Last Updated Card */}
+          <Card className="overflow-hidden rounded-xl border-none shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-r from-coral to-coral-light text-white">
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center mr-4">
+                  <Clock className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <p className="text-white/80 font-medium">Last Updated</p>
+                  <div className="flex items-end">
+                    <h3 className="text-xl font-bold animate-fade-in">
+                      {lastUpdated.toLocaleTimeString('en-US', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </h3>
+                    <span className="ml-2 text-white/60 text-sm">
+                      {lastUpdated.toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric'
+                      })}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4 flex justify-between items-center text-xs text-white/70">
+                <span>Database synced</span>
+                <span className="flex items-center">
+                  <span className="w-2 h-2 bg-green-300 rounded-full mr-1 animate-pulse"></span>
+                  Active
+                </span>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+        
         {/* Search Input */}
         <div className="relative mb-8">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -109,7 +177,7 @@ const Search = () => {
             Customers
           </h2>
           
-          <Button variant="ghost" className="flex items-center gap-2">
+          <Button variant="ghost" className="flex items-center gap-2 text-navy hover:text-coral transition-colors">
             <Filter className="h-4 w-4" />
             Filter
           </Button>
