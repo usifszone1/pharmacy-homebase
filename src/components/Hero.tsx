@@ -1,5 +1,6 @@
 
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Heart, ArrowDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -13,6 +14,7 @@ interface HeroProps {
 const Hero = ({ title, subtitle, onExploreClick }: HeroProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsVisible(true);
@@ -30,6 +32,10 @@ const Hero = ({ title, subtitle, onExploreClick }: HeroProps) => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleExploreClick = () => {
+    navigate('/search');
+  };
 
   return (
     <div 
@@ -94,7 +100,7 @@ const Hero = ({ title, subtitle, onExploreClick }: HeroProps) => {
             <Button 
               variant="outline" 
               className="border-navy text-navy hover:bg-navy/5 px-8 py-6 rounded-md text-lg"
-              onClick={onExploreClick}
+              onClick={handleExploreClick}
             >
               Explore Services
             </Button>
