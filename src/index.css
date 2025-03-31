@@ -120,6 +120,10 @@
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.18);
   }
+
+  .neo-glass {
+    @apply bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl;
+  }
   
   /* Text balance for better typography */
   p, h1, h2, h3, h4, h5, h6 {
