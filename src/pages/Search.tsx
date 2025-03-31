@@ -195,27 +195,27 @@ const Search = () => {
           <>
             {filteredCustomers.length > 0 ? (
               <div className="overflow-x-auto">
-                <table className="w-full bg-white rounded-xl overflow-hidden shadow-card">
-                  <thead className="bg-gray-50">
+                <table className="w-full bg-navy rounded-xl overflow-hidden shadow-card">
+                  <thead className="bg-navy-dark border-b border-navy-light/20">
                     <tr>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-navy">Name</th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-navy">Phone</th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-navy">Card No</th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-navy">Organization</th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-navy">Agenda</th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-navy">Last Visit</th>
-                      <th className="px-6 py-4 text-right text-sm font-semibold text-navy">Actions</th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-white">Name</th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-white">Phone</th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-white">Card No</th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-white">Organization</th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-white">Agenda</th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-white">Last Visit</th>
+                      <th className="px-6 py-4 text-right text-sm font-semibold text-white">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-200">
+                  <tbody className="divide-y divide-navy-light/10">
                     {filteredCustomers.map((customer) => (
-                      <tr key={customer.id} className="hover:bg-gray-50 transition-colors">
-                        <td className="px-6 py-4 whitespace-nowrap text-navy">{customer.name}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-gray-600">{customer.phone}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-gray-600">{customer.cardNo || '-'}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-gray-600">{customer.organization || '-'}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-gray-600">{customer.agenda || '-'}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-gray-600">
+                      <tr key={customer.id} className="hover:bg-navy-light/20 transition-colors">
+                        <td className="px-6 py-4 whitespace-nowrap text-white">{customer.name}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-white/80">{customer.phone}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-white/80">{customer.cardNo || '-'}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-white/80">{customer.organization || '-'}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-white/80">{customer.agenda || '-'}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-white/80">
                           {new Date(customer.lastVisit).toLocaleDateString('en-US', {
                             year: 'numeric',
                             month: 'short',
@@ -223,7 +223,7 @@ const Search = () => {
                           })}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right">
-                          <Button variant="ghost" className="text-pharmacy-accent hover:text-navy transition-colors">
+                          <Button variant="ghost" className="text-coral hover:text-coral-light transition-colors">
                             View Details
                           </Button>
                         </td>
@@ -233,8 +233,8 @@ const Search = () => {
                 </table>
               </div>
             ) : (
-              <div className="text-center py-12 bg-white rounded-xl shadow-card">
-                <p className="text-gray-600">No customers found matching your search criteria.</p>
+              <div className="text-center py-12 bg-navy text-white rounded-xl shadow-card">
+                <p>No customers found matching your search criteria.</p>
               </div>
             )}
           </>

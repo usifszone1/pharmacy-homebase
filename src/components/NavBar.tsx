@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Menu, X, ChevronDown, Heart, Search, UserCircle, Moon, Sun, FileText } from 'lucide-react';
+import { Menu, X, ChevronDown, Heart, Search, UserCircle, Moon, Sun } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/components/ThemeProvider';
@@ -57,8 +57,8 @@ const NavBar = () => {
     <>
       <header 
         className={cn(
-          "fixed top-0 left-0 right-0 z-50 transition-all duration-300 animate-fade-in backdrop-blur-lg",
-          isScrolled ? "bg-background/80 shadow-md py-2" : "bg-background/40 py-4"
+          "fixed top-0 left-0 right-0 z-50 transition-all duration-300 animate-fade-in",
+          isScrolled ? "bg-background shadow-md py-2" : "bg-transparent py-4"
         )}
       >
         <div className="container-custom">
@@ -67,12 +67,10 @@ const NavBar = () => {
             <div className="flex items-center">
               <a 
                 href="/" 
-                className="flex items-center gap-2 text-foreground hover:opacity-90 transition-opacity group"
+                className="flex items-center gap-2 text-foreground hover:opacity-90 transition-opacity"
               >
-                <div className="relative overflow-hidden rounded-full p-1 bg-gradient-to-r from-coral to-navy group-hover:from-navy group-hover:to-coral transition-all duration-500">
-                  <Heart className="h-7 w-7 text-white animate-pulse-soft" />
-                </div>
-                <span className="font-display text-xl sm:text-2xl font-bold bg-gradient-to-r from-navy to-coral bg-clip-text text-transparent">EL-ZOHOR PHARMACY</span>
+                <Heart className="h-8 w-8 text-coral animate-pulse-soft" />
+                <span className="font-display text-xl sm:text-2xl font-bold">EL-ZOHOR PHARMACY</span>
               </a>
             </div>
 
@@ -89,12 +87,6 @@ const NavBar = () => {
                 className="text-foreground font-medium hover:text-pharmacy-accent transition-colors"
               >
                 Invoice
-              </a>
-              <a 
-                href="/search" 
-                className="text-foreground font-medium hover:text-pharmacy-accent transition-colors"
-              >
-                Clients
               </a>
             </nav>
 
@@ -118,11 +110,11 @@ const NavBar = () => {
                 <span>Search</span>
               </Button>
               <Button 
-                className="bg-navy hover:bg-navy-light transition-colors text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                className="bg-navy text-white hover:bg-navy-light transition-colors"
                 onClick={openLoginModal}
               >
-                <FileText className="mr-2 h-5 w-5" />
-                Invoices
+                <UserCircle className="mr-2 h-5 w-5" />
+                Login
               </Button>
             </div>
 
@@ -153,7 +145,7 @@ const NavBar = () => {
       {/* Mobile menu */}
       <div 
         className={cn(
-          "fixed inset-0 z-40 bg-background/80 backdrop-blur-lg transform transition-transform duration-300 ease-in-out",
+          "fixed inset-0 z-40 bg-background transform transition-transform duration-300 ease-in-out",
           isMobileMenuOpen ? "translate-x-0" : "translate-x-full",
           "md:hidden"
         )}
@@ -174,13 +166,6 @@ const NavBar = () => {
           >
             Invoice
           </a>
-          <a 
-            href="/search" 
-            className="block px-3 py-4 text-base font-medium text-foreground border-b border-gray-100"
-            onClick={closeMobileMenu}
-          >
-            Clients
-          </a>
           <div className="pt-4 flex flex-col space-y-4">
             <Button 
               variant="outline" 
@@ -191,11 +176,11 @@ const NavBar = () => {
               Search
             </Button>
             <Button 
-              className="w-full justify-center bg-navy text-white hover:bg-navy-light shadow-md"
+              className="w-full justify-center bg-navy text-white hover:bg-navy-light"
               onClick={openLoginModal}
             >
-              <FileText className="mr-2 h-5 w-5" />
-              Invoices
+              <UserCircle className="mr-2 h-5 w-5" />
+              Login
             </Button>
           </div>
         </div>
