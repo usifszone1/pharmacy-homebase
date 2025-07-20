@@ -15,38 +15,47 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <ThemeProvider defaultTheme="light">
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/search" element={<Search />} />
-            <Route path="/arabic-search" element={<ArabicSearch />} />
-            <Route path="/sign-in" element={
-              <div className="min-h-screen flex items-center justify-center">
-                <SignIn routing="path" path="/sign-in" />
-              </div>
-            } />
-            <Route path="/sign-up" element={
-              <div className="min-h-screen flex items-center justify-center">
-                <SignUp routing="path" path="/sign-up" />
-              </div>
-            } />
-            <Route path="/dashboard" element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            } />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </ThemeProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  // Check if Clerk is enabled
+  const isClerkEnabled = Boolean(import.meta.env.VITE_CLERK_PUBLISHABLE_KEY);
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider defaultTheme="light">
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/search" element={<Search />} />
+              <Route path="/arabic-search" element={<ArabicSearch />} />
+              {isClerkEnabled && (
+                <>
+                  <Route path="/sign-in" element={
+                    <div className="min-h-screen flex items-center justify-center">
+                      <SignIn routing="path" path="/sign-in" />
+                    </div>
+                  } />
+                  <Route path="/sign-up" element={
+                    <div className="min-h-screen flex items-center justify-center">
+                      <SignUp routing="path" path="/sign-up" />
+                    </div>
+                  } />
+                </>
+              )}
+              <Route path="/dashboard" element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              } />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
