@@ -14,6 +14,9 @@ const NavActions = ({ closeMobileMenu, isMobile = false }: NavActionsProps) => {
   const navigate = useNavigate();
   const { theme, setTheme } = useTheme();
   
+  // Check if Clerk is enabled
+  const isClerkEnabled = Boolean(import.meta.env.VITE_CLERK_PUBLISHABLE_KEY);
+  
   const handleSearchClick = () => {
     navigate('/search');
     closeMobileMenu();
@@ -36,15 +39,17 @@ const NavActions = ({ closeMobileMenu, isMobile = false }: NavActionsProps) => {
           Search
         </Button>
         
-        <SignedOut>
-          <SignInButton mode="modal">
-            <Button 
-              className="w-full justify-center bg-navy text-white hover:bg-navy-light"
-            >
-              Sign In
-            </Button>
-          </SignInButton>
-        </SignedOut>
+        {isClerkEnabled && (
+          <SignedOut>
+            <SignInButton mode="modal">
+              <Button 
+                className="w-full justify-center bg-navy text-white hover:bg-navy-light"
+              >
+                Sign In
+              </Button>
+            </SignInButton>
+          </SignedOut>
+        )}
       </div>
     );
   }
@@ -70,26 +75,30 @@ const NavActions = ({ closeMobileMenu, isMobile = false }: NavActionsProps) => {
         <span>Search</span>
       </Button>
       
-      <SignedOut>
-        <SignInButton mode="modal">
-          <Button 
-            className="bg-navy hover:bg-navy-light transition-colors"
-          >
-            Sign In
-          </Button>
-        </SignInButton>
-      </SignedOut>
-      
-      <SignedIn>
-        <UserButton 
-          appearance={{
-            elements: {
-              userButtonAvatarBox: "w-10 h-10"
-            }
-          }}
-          afterSignOutUrl="/"
-        />
-      </SignedIn>
+      {isClerkEnabled && (
+        <>
+          <SignedOut>
+            <SignInButton mode="modal">
+              <Button 
+                className="bg-navy hover:bg-navy-light transition-colors"
+              >
+                Sign In
+              </Button>
+            </SignInButton>
+          </SignedOut>
+          
+          <SignedIn>
+            <UserButton 
+              appearance={{
+                elements: {
+                  userButtonAvatarBox: "w-10 h-10"
+                }
+              }}
+              afterSignOutUrl="/"
+            />
+          </SignedIn>
+        </>
+      )}
     </div>
   );
 };

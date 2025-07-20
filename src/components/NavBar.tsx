@@ -14,6 +14,9 @@ const NavBar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { theme, setTheme } = useTheme();
+  
+  // Check if Clerk is enabled
+  const isClerkEnabled = Boolean(import.meta.env.VITE_CLERK_PUBLISHABLE_KEY);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -71,16 +74,18 @@ const NavBar = () => {
                 {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
               </Button>
               
-              <SignedIn>
-                <UserButton 
-                  appearance={{
-                    elements: {
-                      userButtonAvatarBox: "w-8 h-8"
-                    }
-                  }}
-                  afterSignOutUrl="/"
-                />
-              </SignedIn>
+              {isClerkEnabled && (
+                <SignedIn>
+                  <UserButton 
+                    appearance={{
+                      elements: {
+                        userButtonAvatarBox: "w-8 h-8"
+                      }
+                    }}
+                    afterSignOutUrl="/"
+                  />
+                </SignedIn>
+              )}
               
               <Button 
                 variant="ghost" 
